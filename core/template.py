@@ -1,6 +1,7 @@
 #Compile raW HTTP data for preproccessing injection representations
 #This is a template for the preproccessing injection representation, which is used to compile raw HTTP data into a format that can be used for preproccessing injection representations. The templateddata is used to create a structured representation of the raw HTTP data, which can then be used for further processing and analysis.
 from dataclasses import dataclass
+from tkinter.font import names
 from typing import List
 
 MARKER_OPEN = "{{"
@@ -38,6 +39,9 @@ def compiled_template(raw: str) -> CompiledTemplate:
             name = raw[start + len(MARKER_OPEN):end]
             if not name:
                 raise ValueError("Empty injection marker")
+            
+            if len(names) != len(set(names)):
+                raise ValueError("Duplicate injection point names")
             
             injection_points.append(
                 InjectionPoint(name=name, index=part_index + 1)
