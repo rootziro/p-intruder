@@ -3,8 +3,8 @@
 from dataclasses import dataclass
 from typing import List
 
-MAKER_OPEN = "{{"
-MAKER_CLOSE = "}}"
+MARKER_OPEN = "{{"
+MARKER_CLOSE = "}}"
 
 @dataclass(frozen=True)
 class InjectionPoint:
@@ -12,12 +12,12 @@ class InjectionPoint:
     index: int
 
 @dataclass(frozen=True)
-class compiledTemplate:
+class CompiledTemplate:
     parts: List[str]
     injection_points: List[InjectionPoint]
 
 
-def compiled_template(raw: str) -> compiledTemplate:
+def compiled_template(raw: str) -> CompiledTemplate:
         parts: List[str] = []
         injection_points: List[InjectionPoint] = []
 
@@ -25,17 +25,17 @@ def compiled_template(raw: str) -> compiledTemplate:
         part_index = 0
 
         while cursor < len(raw):
-            start = raw.find(MAKER_OPEN, cursor)
+            start = raw.find(MARKER_OPEN, cursor)
             if start == -1:
                 parts.append(raw[cursor:])
                 break
-            end = raw.find(MAKER_CLOSE, start + 1)
+            end = raw.find(MARKER_CLOSE, start + 1)
             if end == -1:
                 raise ValueError("Unclosed injection marker")
             
             parts.append(raw[cursor:start])
 
-            name = raw[start + 1:end]
+            name = raw[start + len(MARKER_OPEN):end]
             if not name:
                 raise ValueError("Empty injection marker")
             
@@ -45,9 +45,9 @@ def compiled_template(raw: str) -> compiledTemplate:
 
             parts.append("")  # Placeholder for the injection point
             part_index += 2
-            cursor = end + 1
+            cursor = end + len(MARKER_CLOSE)
 
         if not injection_points:
             raise ValueError("No injection points found")
-        
-        return compiledTemplate(parts, injection_points)
+                                                                                                            
+        return CompiledTemplate(parts, injection_points)            
