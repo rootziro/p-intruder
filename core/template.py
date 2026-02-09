@@ -54,4 +54,4 @@ def compiled_template(raw: str) -> CompiledTemplate:
         if not injection_points:
             raise ValueError("No injection points found")
                                                                                                             
-        return CompiledTemplate(parts, injection_points)            
+        return CompiledTemplate(parts, injection_points) d           
