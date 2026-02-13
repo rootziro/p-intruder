@@ -10,7 +10,7 @@ class InjectionPoint:
     index: int
 
 @dataclass(frozen=True)
-class CompiledTemplate:                                         # ROOTZIR0
+class CompiledTemplate:                                         
     parts: List[str]
     injection_points: List[InjectionPoint]
 
