@@ -3,8 +3,6 @@
 from dataclasses import dataclass
 from typing import List
 
-from ibm_db import result
-
 MARKER_OPEN = "{{"
 MARKER_CLOSE = "}}"
 
