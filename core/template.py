@@ -49,7 +49,7 @@ def compile_template(raw: str) -> CompiledTemplate:
         if name in names:
             raise ValueError(f"Duplicate injection point name: {name}")
         
-        names.append(name)                                                          # RootZir0
+        names.append(name)                                                         
         injection_points.append(
             InjectionPoint(name=name, index=part_index + 1)
         )
