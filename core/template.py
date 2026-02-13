@@ -63,3 +63,11 @@ def compile_template(raw: str) -> CompiledTemplate:
         raise ValueError("No injection points found")
     
     return CompiledTemplate(parts, injection_points)
+
+if __name__ == "__main__":
+    raw_http = """POST /login HTTP/1.1
+    Host: juice-shop.herokuapp.com
+    username={{user}}&password={{pass}}"""
+
+    template = compile_template(raw_http)
+    print(template.render({"user": "admin", "pass": "password123"}))
