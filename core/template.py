@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from typing import List
 
+from ibm_db import result
+
 MARKER_OPEN = "{{"
 MARKER_CLOSE = "}}"
 
@@ -16,13 +18,13 @@ class CompiledTemplate:
     parts: List[str]
     injection_points: List[InjectionPoint]
 
-def render(self, payload_map: dict) -> str:
-    result = List[self.parts]
-    for point in self.injection_points:
-        if point.name not in payload_map:
-            raise ValueError(f"Missing payload for injection point: {point.name}") 
-        result[point.index] = payload_map[point.name]
-    return "".join(result)
+    def render(self, payloads_map: dict) -> str:
+        result = list(self.parts)
+        for point in self.injection_points:
+            if point.name not in payloads_map:
+                raise ValueError(f"Missing payload for injection point: {point.name}")
+            result[point.index] = payloads_map[point.name]
+        return "".join(result)
 
 def compile_template(raw: str) -> CompiledTemplate:
     parts: List[str] = []
@@ -64,10 +66,11 @@ def compile_template(raw: str) -> CompiledTemplate:
     
     return CompiledTemplate(parts, injection_points)
 
+#Test
 if __name__ == "__main__":
-    raw_http = """POST /login HTTP/1.1
+    raw_http = """POST /login HTTP/1.1 
     Host: juice-shop.herokuapp.com
     username={{user}}&password={{pass}}"""
 
     template = compile_template(raw_http)
-    print(template.render({"user": "admin", "pass": "password123"}))
+    print(template.render({'user': 'admin', 'pass': 'password123'}))
