@@ -16,13 +16,21 @@ class CompiledTemplate:
     parts: List[str]
     injection_points: List[InjectionPoint]
 
-def compiled_template(raw: str) -> CompiledTemplate:
+def render(self, payload_map: dict) -> str:
+    result = List[self.parts]
+    for point in self.injection_points:
+        if point.name not in payload_map:
+            raise ValueError(f"Missing payload for injection point: {point.name}") 
+        result[point.index] = payload_map[point.name]
+    return "".join(result)
+
+def compile_template(raw: str) -> CompiledTemplate:
     parts: List[str] = []
     injection_points: List[InjectionPoint] = []
     names: List[str] = []  # Track names for duplicate checking
     cursor = 0
     part_index = 0
-    
+
     while cursor < len(raw):
         start = raw.find(MARKER_OPEN, cursor)
         if start == -1:
@@ -54,4 +62,4 @@ def compiled_template(raw: str) -> CompiledTemplate:
     if not injection_points:
         raise ValueError("No injection points found")
     
-    return CompiledTemplate(parts, injection_points)         
+    return CompiledTemplate(parts, injection_points)
