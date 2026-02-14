@@ -6,4 +6,4 @@ def load_payloads(filepath: str) -> Iterator[str]:
             
             cleaned = line.strip()
             if cleaned and not cleaned.startswith('#'):
-                yield cleaned 
+                yield cleaned
