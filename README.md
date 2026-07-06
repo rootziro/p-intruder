@@ -8,9 +8,6 @@ PyIntruder is **not a scanner**. It is a **request templating and execution engi
 
 ## Philosophy
 
-Commercial tools abstract too much too early.  
-PyIntruder is built to expose *how* request mutation, payload injection, and concurrency actually work.
-
 Design goals:
 - Raw HTTP fidelity
 - Deterministic request mutation
